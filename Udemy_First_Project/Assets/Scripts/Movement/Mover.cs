@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.AI;
 
 using RPG.Core;
+using RPG.Saving;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction 
+    
+    public class Mover : MonoBehaviour, IAction , ISaveable
     {
 
         [SerializeField]Transform target;
@@ -52,6 +54,21 @@ namespace RPG.Movement
             Vector3 localVelocity = transform.InverseTransformDirection(velocity);
             float speed = localVelocity.z;
             GetComponent<Animator>().SetFloat("ForwardSpeed", speed);
+        }
+
+        public object CaptureState()
+        {
+            //restriction on waht can be returned, has to be serializable
+            return new SerializableVector3 (transform.position);
+        }
+
+        public void RestoreState(object state)
+        {//called after awake but before start
+            SerializableVector3 position = (SerializableVector3)state;
+            //nav mesh to prevant nave mesh interfering
+            GetComponent<NavMeshAgent>().enabled = false;
+            transform.position = position.ToVector();
+            GetComponent<NavMeshAgent>().enabled = true;
         }
     }
 }

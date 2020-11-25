@@ -17,6 +17,10 @@ namespace RPG.SceneManagement
         [SerializeField] int sceneToLoad = -1;
         [SerializeField] Transform spawnPoint;
         [SerializeField] DestinationIdentifier destination;
+        [SerializeField] float fadeOutTime=1f;
+        [SerializeField] float fadeInTime=1f;
+        [SerializeField] float fadeWaitTime = 0.5f;
+
         enum DestinationIdentifier
             //this is to list portal and choose which one in a scene to load at
         {
@@ -36,12 +40,25 @@ namespace RPG.SceneManagement
                 Debug.LogError("Scene to load not set");
                 yield break; }
             //    SceneManager.LoadScene(sceneToLoad);
+
+            
             DontDestroyOnLoad(gameObject);
+
+            Fader fader = FindObjectOfType<Fader>();
+            yield return fader.FadeOut(fadeOutTime);
+            //save current level
+            SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
+            wrapper.Save();
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             //   print("Scene Loaded");
-
+            //reload current level
+            wrapper.Load();
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
+
+            yield return new WaitForSeconds(fadeWaitTime);
+            yield return fader.FadeIn(fadeInTime);
+
             Destroy(gameObject);//only works on gameobjects at root of scene
         }
 

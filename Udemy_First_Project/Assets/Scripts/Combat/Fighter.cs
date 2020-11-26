@@ -10,17 +10,25 @@ namespace RPG.Combat
   
     public class Fighter : MonoBehaviour, IAction
     {
-        [SerializeField] float weaponRange = 2f;
+      //  [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttacks =1f;
-        [SerializeField] float damageInflicted = 20f;
-        [SerializeField] GameObject weaponPrefab = null;
-        [SerializeField] Transform handTransform = null;
+      //  [SerializeField] float damageInflicted = 20f;
+        //cut and moved to weapon script
+      //  [SerializeField] GameObject weaponPrefab = null;
+        [SerializeField] Transform rightHandTransform = null;
+        [SerializeField] Transform leftHandTransform = null;
+
+        //    [SerializeField] AnimatorOverrideController weaponOverride = null;
+        [SerializeField] Weapon defaultWeapon = null;
         Health target;
         float timeSinceLastAttack = Mathf.Infinity;
+        Weapon currentWeapon = null;
         private void Start()
         {
-            if (weaponPrefab != null && handTransform != null)
-            { SpawnWeapon(); }
+          //  if (weaponPrefab != null && handTransform != null)
+           // { 
+            EquipWeapon(defaultWeapon); 
+          //  }
         }
         private void Update()
         {
@@ -80,13 +88,27 @@ namespace RPG.Combat
         //animation event -- hit()
         void Hit()
         {
-            if (target == null) {return; }
-            target.TakeDamage(damageInflicted);
+            if (target == null) { return; }
+            if (currentWeapon.HasProjectile())
+            {
+                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target);
+            }
+            else
+            {
+
+
+                target.TakeDamage(currentWeapon.GetDamage());
+            }
+        }
+        //nimation event
+        void Shoot()
+        {
+            Hit();
         }
 
         private bool GetIsInRange()
         {
-            return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
+            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetWeaponRange();
         }
 
       
@@ -105,9 +127,16 @@ namespace RPG.Combat
 
             GetComponent<Animator>().SetTrigger("stopAttack");
         }
-        private void SpawnWeapon()
+        public void EquipWeapon(Weapon weapon)
         {
-            Instantiate(weaponPrefab, handTransform);
+
+            //if (weapon == null) return;
+            //moved to weapon
+            //     Instantiate(weaponPrefab, handTransform);
+            currentWeapon = weapon;
+            Animator animator = GetComponent<Animator>();
+            weapon.Spawn(rightHandTransform, leftHandTransform, animator);
+           // animator.runtimeAnimatorController = weaponOverride;
         }
     }
 }

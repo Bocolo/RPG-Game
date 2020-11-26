@@ -21,7 +21,7 @@ namespace RPG.Core
         public void TakeDamage(float damage)
         {
             healthPoints = Mathf.Max(healthPoints - damage, 0);
-            print(healthPoints);
+            print(healthPoints + "  " + gameObject.name);
             if(healthPoints == 0)
             {
                 Die();

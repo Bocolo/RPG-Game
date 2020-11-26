@@ -1128,6 +1128,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3f6fc0cf5e5d31c458bc74ede87cb8ae, type: 2}
+    - target: {fileID: 6491442931319258287, guid: 6258910e613e9c2498e383e8926848b4,
+        type: 3}
+      propertyPath: uniqueIdentifier
+      value: ff5a3e56-c014-49a1-9d02-e789b3080725
+      objectReference: {fileID: 0}
     - target: {fileID: 7644021698394237007, guid: 6258910e613e9c2498e383e8926848b4,
         type: 3}
       propertyPath: maxSpeed
@@ -2892,6 +2897,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3f6fc0cf5e5d31c458bc74ede87cb8ae, type: 2}
+    - target: {fileID: 6491442931319258287, guid: 6258910e613e9c2498e383e8926848b4,
+        type: 3}
+      propertyPath: uniqueIdentifier
+      value: 07b7b4bc-a984-4f0c-b0fb-17bd32a6788c
+      objectReference: {fileID: 0}
     - target: {fileID: 7644021698394237007, guid: 6258910e613e9c2498e383e8926848b4,
         type: 3}
       propertyPath: maxSpeed
@@ -3557,6 +3567,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.6357
       objectReference: {fileID: 0}
+    - target: {fileID: 6491442931319258287, guid: 6258910e613e9c2498e383e8926848b4,
+        type: 3}
+      propertyPath: uniqueIdentifier
+      value: a0793727-e029-492e-ab09-1729efbbafae
+      objectReference: {fileID: 0}
     - target: {fileID: 7644021698394237007, guid: 6258910e613e9c2498e383e8926848b4,
         type: 3}
       propertyPath: maxSpeed
@@ -3859,6 +3874,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 01b2546c969fe814794af634cb4534f4, type: 2}
+    - target: {fileID: 6491442931319258287, guid: 6258910e613e9c2498e383e8926848b4,
+        type: 3}
+      propertyPath: uniqueIdentifier
+      value: b721f729-5719-4297-84f3-77105afdfd76
+      objectReference: {fileID: 0}
     - target: {fileID: 7644021698394237007, guid: 6258910e613e9c2498e383e8926848b4,
         type: 3}
       propertyPath: maxSpeed
@@ -4783,6 +4803,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491442931319258287, guid: 6258910e613e9c2498e383e8926848b4,
+        type: 3}
+      propertyPath: uniqueIdentifier
+      value: 8c64ad69-4748-4281-844d-86cd3f34ebdf
       objectReference: {fileID: 0}
     - target: {fileID: 7644021698394237007, guid: 6258910e613e9c2498e383e8926848b4,
         type: 3}

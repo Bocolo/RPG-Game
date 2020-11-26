@@ -4,6 +4,7 @@ using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
 
+
 namespace RPG.Combat
 {
   
@@ -12,15 +13,23 @@ namespace RPG.Combat
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttacks =1f;
         [SerializeField] float damageInflicted = 20f;
+        [SerializeField] GameObject weaponPrefab = null;
+        [SerializeField] Transform handTransform = null;
         Health target;
         float timeSinceLastAttack = Mathf.Infinity;
+        private void Start()
+        {
+            if (weaponPrefab != null && handTransform != null)
+            { SpawnWeapon(); }
+        }
         private void Update()
         {
             timeSinceLastAttack += Time.deltaTime;
             if (target == null) return;
             if (target.IsDead()) return;
+
             
-    
+           
 
             if (!GetIsInRange())
             {
@@ -95,6 +104,10 @@ namespace RPG.Combat
             GetComponent<Animator>().ResetTrigger("attack");
 
             GetComponent<Animator>().SetTrigger("stopAttack");
+        }
+        private void SpawnWeapon()
+        {
+            Instantiate(weaponPrefab, handTransform);
         }
     }
 }

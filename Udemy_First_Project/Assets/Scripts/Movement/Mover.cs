@@ -58,16 +58,40 @@ namespace RPG.Movement
 
         public object CaptureState()
         {
+            // methods for saving multiples pieces of data for one componenet/ dictionary
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["position"]= new SerializableVector3(transform.position);
+            data["rotation"]= new SerializableVector3(transform.eulerAngles);
+
             //restriction on waht can be returned, has to be serializable
-            return new SerializableVector3 (transform.position);
+            //previous
+            // return new SerializableVector3 (transform.position);
+
+            // using dictionary method
+            return data;
+            //REVIEW LECTURE 85 BONUS
+            //ALSO demonstractes struct method
+            //must also change restor state using below
+            //  Dictionary<string, object> data =(Dictionary<string, object>)state; 
+            //instead of//
+            //SerializableVector3 position = (SerializableVector3)state; -- see restore state
         }
 
         public void RestoreState(object state)
         {//called after awake but before start
-            SerializableVector3 position = (SerializableVector3)state;
-            //nav mesh to prevant nave mesh interfering
+         // SerializableVector3 position = (SerializableVector3)state;
+         //nav mesh to prevant nave mesh interfering
+         //
+         //this causing yellow error--- failed to creat agent... explore navmeshAgent.wrap() 
+            Dictionary<string, object> data = (Dictionary<string, object>)state;
             GetComponent<NavMeshAgent>().enabled = false;
-            transform.position = position.ToVector();
+
+            // below is changed with dictionary changes
+            //transform.position = position.ToVector();
+            //changed to 
+            transform.position =( (SerializableVector3) data["position"]).ToVector();
+            transform.eulerAngles = ((SerializableVector3)data["rotation"]).ToVector();
+
             GetComponent<NavMeshAgent>().enabled = true;
         }
     }

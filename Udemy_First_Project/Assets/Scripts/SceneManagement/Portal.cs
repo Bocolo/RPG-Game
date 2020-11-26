@@ -55,6 +55,9 @@ namespace RPG.SceneManagement
             wrapper.Load();
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
+            //checkpoint to save location after going through portal
+
+            wrapper.Save();
 
             yield return new WaitForSeconds(fadeWaitTime);
             yield return fader.FadeIn(fadeInTime);
@@ -65,15 +68,26 @@ namespace RPG.SceneManagement
         private static void UpdatePlayer(Portal otherPortal)
         {
             GameObject player =GameObject.FindWithTag("Player");
-            //***other way
-            player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);
-            // dont set position tranfrom if doing this
             
+            
+            
+            //***other way
+            // this is what I had listed(below), not sure when I set it
+            // it worked without using(commenting out) the nav enable /disable and p.tran.pos
+            // commenting it out to align with lecture and reinserting the above
+            //Test to see difference
+           // player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);
+            // dont set position tranfrom if doing this
+
+            player.GetComponent<NavMeshAgent>().enabled = false;
+
+
+
             //one way to do 
             //***  player.GetComponent<NavMeshAgent>().eneable=false;
-        //    player.transform.position = otherPortal.spawnPoint.position;
+            player.transform.position = otherPortal.spawnPoint.position;
             player.transform.rotation = otherPortal.spawnPoint.rotation;
-            //***  player.GetComponent<NavMeshAgent>().eneable=true;
+            player.GetComponent<NavMeshAgent>().enabled=true;
         }
 
         private Portal GetOtherPortal()

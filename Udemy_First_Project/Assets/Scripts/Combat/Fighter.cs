@@ -3,32 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
-
+using RPG.Saving;
+using RPG.Resources;
 
 namespace RPG.Combat
 {
-  
-    public class Fighter : MonoBehaviour, IAction
-    {
-      //  [SerializeField] float weaponRange = 2f;
-        [SerializeField] float timeBetweenAttacks =1f;
-      //  [SerializeField] float damageInflicted = 20f;
-        //cut and moved to weapon script
-      //  [SerializeField] GameObject weaponPrefab = null;
-        [SerializeField] Transform rightHandTransform = null;
-        [SerializeField] Transform leftHandTransform = null;
 
-        //    [SerializeField] AnimatorOverrideController weaponOverride = null;
+    public class Fighter : MonoBehaviour, IAction, ISaveable
+    {
+        
+        [SerializeField] float timeBetweenAttacks = 1f;   
+        [SerializeField] Transform rightHandTransform = null;
+        [SerializeField] Transform leftHandTransform = null;  
         [SerializeField] Weapon defaultWeapon = null;
+      //  [SerializeField] string defaultWeaponName = "Unarmed";
+
         Health target;
         float timeSinceLastAttack = Mathf.Infinity;
         Weapon currentWeapon = null;
+
         private void Start()
         {
-          //  if (weaponPrefab != null && handTransform != null)
-           // { 
-            EquipWeapon(defaultWeapon); 
-          //  }
+
+            //  Weapon weapon = Resources.Load<Weapon>(defaultWeaponName);
+            if (currentWeapon == null)
+            {
+                EquipWeapon(defaultWeapon);
+            } 
+        
         }
         private void Update()
         {
@@ -138,5 +140,28 @@ namespace RPG.Combat
             weapon.Spawn(rightHandTransform, leftHandTransform, animator);
            // animator.runtimeAnimatorController = weaponOverride;
         }
+
+        public object CaptureState()
+        {
+            //teporary way to store weapon
+            //weapon should never be null
+            return currentWeapon.name;
+        }
+
+        public void RestoreState(object state)
+        {
+            string weaponName = (string)state;
+            Weapon weapon = UnityEngine.Resources.Load<Weapon>(weaponName);
+            EquipWeapon(weapon);
+        }
     }
 }
+/*{    
+       * //  [SerializeField] float damageInflicted = 20f;
+        //cut and moved to weapon script
+//  [SerializeField] float weaponRange = 2f;
+      //  [SerializeField] GameObject weaponPrefab = null;
+      //  [SerializeField] float weaponRange = 2f;
+      //    [SerializeField] AnimatorOverrideController weaponOverride = null;
+      //    [SerializeField] AnimatorOverrideController weaponOverride = null;
+      }*/

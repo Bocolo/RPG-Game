@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using RPG.Resources;
 using RPG.Core;
 using RPG.Saving;
 
 namespace RPG.Movement
 {
-    
+
     public class Mover : MonoBehaviour, IAction , ISaveable
     {
 

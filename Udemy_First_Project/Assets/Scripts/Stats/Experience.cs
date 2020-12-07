@@ -11,7 +11,7 @@ namespace RPG.Stats
         // public delegate void ExperienceGainedDelegate();
         // using Action allows you to use a void delegate .. no retrn value
         //public event ExperienceGainedDelegate onExperienceGained;
-        public Action  onExperienceGained;
+        public event Action  onExperienceGained;
 
         public void GainExperience(float experience)
         {

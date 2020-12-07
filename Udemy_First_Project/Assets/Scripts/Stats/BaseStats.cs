@@ -71,7 +71,7 @@ namespace RPG.Stats
         public float GetStat(Stat stat)
         {
 
-            return GetBaseStat(stat) + GetAdditiveModifiers(stat)*(1+ (GetPercentageModifier(stat)/100));
+            return (GetBaseStat(stat) + GetAdditiveModifiers(stat))*(1+ GetPercentageModifier(stat)/100);
         }
 
         

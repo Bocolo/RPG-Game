@@ -1,4 +1,18 @@
-%YAML 1.1
+﻿
+
+namespace RPG.Stats
+{
+    enum Stat
+    {
+        Health,
+        ExperienceReward
+    }
+}
+
+    /*
+     
+     
+     %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -14,21 +28,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterClasses:
   - characterClass: 0
-    stats:
-    - stat: 0
-      levels:
-      - 50
-      - 100
-      - 200
-      - 400
-      - 700
+    health:
+    - 100
+    - 200
+    - 300
+    - 400
   - characterClass: 1
-    stats:
-    - stat: 0
-      levels:
-      - 40
+    health:
+    - 50
   - characterClass: 2
-    stats:
-    - stat: 0
-      levels:
-      - 30
+    health:
+    - 50
+
+     */

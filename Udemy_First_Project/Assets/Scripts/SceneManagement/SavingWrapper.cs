@@ -29,6 +29,10 @@ namespace RPG.SceneManagement
             {
                 Save();
             }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                Delete();
+            }
         }
 
         public void Save()
@@ -41,6 +45,10 @@ namespace RPG.SceneManagement
             GetComponent<SavingSystem>().Load(defaultSaveFile);
             //Call to savibg system
             //throw new NotImplementedException();
+        }
+        public void Delete()
+        {
+            GetComponent<SavingSystem>().Delete(defaultSaveFile);
         }
     }
 }

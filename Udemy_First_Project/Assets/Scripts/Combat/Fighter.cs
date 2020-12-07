@@ -93,13 +93,13 @@ namespace RPG.Combat
             if (target == null) { return; }
             if (currentWeapon.HasProjectile())
             {
-                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target);
+                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target, gameObject);
             }
             else
             {
 
 
-                target.TakeDamage(currentWeapon.GetDamage());
+                target.TakeDamage(gameObject,currentWeapon.GetDamage());
             }
         }
         //nimation event
@@ -139,6 +139,10 @@ namespace RPG.Combat
             Animator animator = GetComponent<Animator>();
             weapon.Spawn(rightHandTransform, leftHandTransform, animator);
            // animator.runtimeAnimatorController = weaponOverride;
+        }
+        public Health GetTarget()
+        {
+            return target;
         }
 
         public object CaptureState()

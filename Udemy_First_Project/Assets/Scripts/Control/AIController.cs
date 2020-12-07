@@ -29,13 +29,20 @@ namespace RPG.Control
         float timeSinceLastSawPlayer = Mathf.Infinity; 
         float timeSinceArrivedAtWayPoint = Mathf.Infinity;
         int currentWayPointIndex = 0;
-        private void Start()
+        private void Awake()
         {
-            //navMeshAgent = GetComponent<NavMeshAgent>();
             fighter = GetComponent<Fighter>();
             health = GetComponent<Health>();
             player = GameObject.FindWithTag("Player");
             move = GetComponent<Mover>();
+        }
+        private void Start()
+        {
+            //navMeshAgent = GetComponent<NavMeshAgent>();
+            /*fighter = GetComponent<Fighter>();
+            health = GetComponent<Health>();
+            player = GameObject.FindWithTag("Player");
+            move = GetComponent<Mover>();*/
             guardLocation = transform.position;
         }
 

@@ -15,12 +15,17 @@ namespace RPG.Movement
         [SerializeField] float maxSpeed = 6f;
         NavMeshAgent navMeshAgent;
         Health health;
-     //   Vector3 distanceFrom;
+        //   Vector3 distanceFrom;
 
-        private void Start()
+        private void Awake()
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
             health = GetComponent<Health>();
+        }
+        private void Start()
+        {
+            /*navMeshAgent = GetComponent<NavMeshAgent>();
+            health = GetComponent<Health>();*/
         }
         void Update()
         {

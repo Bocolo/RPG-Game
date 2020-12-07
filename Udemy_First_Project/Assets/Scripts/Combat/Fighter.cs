@@ -6,6 +6,8 @@ using RPG.Core;
 using RPG.Saving;
 using RPG.Resources;
 using RPG.Stats;
+using GameDevTV.Utils;
+using System;
 
 namespace RPG.Combat
 {
@@ -21,16 +23,27 @@ namespace RPG.Combat
 
         Health target;
         float timeSinceLastAttack = Mathf.Infinity;
-        Weapon currentWeapon = null;
+        LazyValue<Weapon> currentWeapon;//= null;
+
+        private void Awake()
+        {
+            currentWeapon = new LazyValue<Weapon>(SetUpDefaultWeapon);
+        }
+
+        private Weapon SetUpDefaultWeapon()
+        {
+            AttachWeapon(defaultWeapon);
+            return defaultWeapon;
+        }
 
         private void Start()
         {
-
+            currentWeapon.ForceInit();
             //  Weapon weapon = Resources.Load<Weapon>(defaultWeaponName);
-            if (currentWeapon == null)
+          /*  if (currentWeapon == null)
             {
                 EquipWeapon(defaultWeapon);
-            } 
+            } */
         
         }
         private void Update()
@@ -94,9 +107,9 @@ namespace RPG.Combat
             if (target == null) { return; }
              float damage = GetComponent<BaseStats>().GetStat(Stat.Damage);
            
-            if (currentWeapon.HasProjectile())
+            if (currentWeapon.value.HasProjectile())
             {
-                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target, gameObject,damage);
+                currentWeapon.value.LaunchProjectile(rightHandTransform, leftHandTransform, target, gameObject,damage);
             }
             else
             {
@@ -113,7 +126,7 @@ namespace RPG.Combat
 
         private bool GetIsInRange()
         {
-            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetWeaponRange();
+            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.value.GetWeaponRange();
         }
 
       
@@ -136,14 +149,14 @@ namespace RPG.Combat
         {
             if(stat== Stat.Damage)
             {
-                yield return currentWeapon.GetDamage();
+                yield return currentWeapon.value.GetDamage();
             }
         }
         public IEnumerable<float> GetPercentageModifiers(Stat stat)
         {
             if (stat == Stat.Damage)
             {
-                yield return currentWeapon.GetPercentageBonus();
+                yield return currentWeapon.value.GetPercentageBonus();
             }
         }
         public void EquipWeapon(Weapon weapon)
@@ -152,11 +165,17 @@ namespace RPG.Combat
             //if (weapon == null) return;
             //moved to weapon
             //     Instantiate(weaponPrefab, handTransform);
-            currentWeapon = weapon;
+            currentWeapon.value = weapon;
+            AttachWeapon(weapon);
+            // animator.runtimeAnimatorController = weaponOverride;
+        }
+
+        private void AttachWeapon(Weapon weapon)
+        {
             Animator animator = GetComponent<Animator>();
             weapon.Spawn(rightHandTransform, leftHandTransform, animator);
-           // animator.runtimeAnimatorController = weaponOverride;
         }
+
         public Health GetTarget()
         {
             return target;
@@ -166,7 +185,7 @@ namespace RPG.Combat
         {
             //teporary way to store weapon
             //weapon should never be null
-            return currentWeapon.name;
+            return currentWeapon.value.name;
         }
 
         public void RestoreState(object state)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameDevTV.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,16 +14,17 @@ namespace RPG.Stats
         [SerializeField] Progression progression = null;
         [SerializeField] GameObject levelUpParticleEffect = null;
         [SerializeField] bool shouldUseModifiers = false;
-        int currentLevel=0;
+        LazyValue<int> currentLevel;
         public event Action onLevelUp;
         Experience experience;
         private void Awake()
         {
             experience = GetComponent<Experience>();
+            currentLevel = new LazyValue<int>(CalculateLevel);
         }
         private void Start()
         {
-            currentLevel = CalculateLevel();
+            currentLevel.ForceInit(); //= CalculateLevel();
            // Experience experience = GetComponent<Experience>();
             /*if (experience != null)
             {
@@ -46,9 +48,9 @@ namespace RPG.Stats
         private void UpdateLevel()
         {
             int newLevel = CalculateLevel();
-            if (newLevel > currentLevel)
+            if (newLevel > currentLevel.value)
             {
-                currentLevel = newLevel;
+                currentLevel.value = newLevel;
                 LevelUpEffect();
                 onLevelUp();
                 print("LeveledUp");
@@ -82,12 +84,12 @@ namespace RPG.Stats
 
         public int GetLevel()
         {
-            if (currentLevel < 1)
+           /* if (currentLevel.value < 1)
             {
-                currentLevel = CalculateLevel();
+                currentLevel.value = CalculateLevel();
                 //this is to prevent issues with execution order as currentlvl initiated at 0 
-            }
-            return currentLevel;
+            }*/
+            return currentLevel.value;
         }
         public int CalculateLevel()
         {

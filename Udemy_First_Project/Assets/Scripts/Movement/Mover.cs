@@ -22,11 +22,11 @@ namespace RPG.Movement
             navMeshAgent = GetComponent<NavMeshAgent>();
             health = GetComponent<Health>();
         }
-        private void Start()
+       /* private void Start()
         {
-            /*navMeshAgent = GetComponent<NavMeshAgent>();
-            health = GetComponent<Health>();*/
-        }
+            *//*navMeshAgent = GetComponent<NavMeshAgent>();
+            health = GetComponent<Health>();*//*
+        }*/
         void Update()
         {
             navMeshAgent.enabled = !health.IsDead();

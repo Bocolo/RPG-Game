@@ -15,6 +15,7 @@ namespace RPG.Attributes
     {
         [SerializeField] float regenerationPercentage = 70f;
         [SerializeField] TakeDamageEvent takeDamage;
+        [SerializeField] UnityEvent onDie;
         // float healthPoints = -1f;
         [System.Serializable]
         public class TakeDamageEvent : UnityEvent<float>
@@ -70,6 +71,7 @@ namespace RPG.Attributes
             // print(healthPoints + "  " + gameObject.name);
             if (healthPoints.value == 0)
             {
+                onDie.Invoke();
                 Die();
                 AwardExperience(instigator);
 
@@ -101,6 +103,7 @@ namespace RPG.Attributes
         {
             if (isDead == false)
             {
+                print("This Character has Died... : " + gameObject.name + " " + healthPoints.value);
             isDead = true;
             GetComponent<Animator>().SetTrigger("die");
             GetComponent<ActionScheduler>().CancelCurrentAction();

@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Resources;
+using RPG.Control;
 
 namespace RPG.Combat
 {
-    public class WeaponPickUp : MonoBehaviour
+    public class WeaponPickUp : MonoBehaviour, IRaycastable
     {
         [SerializeField] Weapon weapon =null;
         [SerializeField] float respawnTime = 10f;
@@ -15,13 +16,18 @@ namespace RPG.Combat
         {
             if(other.tag == "Player")
             {
-
-                other.GetComponent<Fighter>().EquipWeapon(weapon);
-                StartCoroutine(HideForSeconds(respawnTime));
-               // Destroy(gameObject);
-               // fighter.EquipWeapon(weapon);
+                PickUp(other.GetComponent<Fighter>());
+                // Destroy(gameObject);
+                // fighter.EquipWeapon(weapon);
             }
         }
+
+        private void PickUp(Fighter fighter)
+        {
+            fighter.EquipWeapon(weapon);
+            StartCoroutine(HideForSeconds(respawnTime));
+        }
+
         private IEnumerator HideForSeconds(float seconds)
         {
             ShowPickUp(false);
@@ -38,6 +44,20 @@ namespace RPG.Combat
             {
                 child.gameObject.SetActive(shouldShow);
             }
+        }
+
+        public bool HandleRaycast(PlayerController callingController)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                PickUp(callingController.GetComponent<Fighter>());
+            }
+            return true;
+        }
+
+        public CursorType GetCursorType()
+        {
+            return CursorType.PickUp;
         }
     }
 }

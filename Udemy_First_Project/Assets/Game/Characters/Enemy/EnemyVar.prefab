@@ -58,6 +58,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   maxSpeed: 6
+  maxNavPathLength: 40
 --- !u!1001 &6086430289773423536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -136,13 +137,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -306094257246071492, guid: 914f2676b46d766428ba57db6ce9e166,
         type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -306094257246071492, guid: 914f2676b46d766428ba57db6ce9e166,
+        type: 3}
       propertyPath: health
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -306094257246071492, guid: 914f2676b46d766428ba57db6ce9e166,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -306094257246071492, guid: 914f2676b46d766428ba57db6ce9e166,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -306094257246071492, guid: 914f2676b46d766428ba57db6ce9e166,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: -1807126576549568050}
+    - target: {fileID: -306094257246071492, guid: 914f2676b46d766428ba57db6ce9e166,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: Aggrevate
+      objectReference: {fileID: 0}
+    - target: {fileID: -306094257246071492, guid: 914f2676b46d766428ba57db6ce9e166,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 156344724199574418, guid: 914f2676b46d766428ba57db6ce9e166,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3811126363351219572, guid: 914f2676b46d766428ba57db6ce9e166,
         type: 3}

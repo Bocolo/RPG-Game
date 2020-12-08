@@ -15,6 +15,8 @@ namespace RPG.Control
     {
         [SerializeField] float chaseDistance = 5f;
         [SerializeField] float suspicionTime= 4f;
+        [SerializeField] float shoutDistance= 5f;
+        [SerializeField] float aggrevationCoolDownTime = 5f;
         [SerializeField] PatrolPath patrolPath;
         [SerializeField] float wayPointTolerance = 1f;
         [SerializeField] float wayPointDwellTime = 3f;
@@ -27,6 +29,7 @@ namespace RPG.Control
         Health health;
         Mover move;
         LazyValue<Vector3> guardLocation;
+        float timeSinceAggrevated = Mathf.Infinity;
         float timeSinceLastSawPlayer = Mathf.Infinity; 
         float timeSinceArrivedAtWayPoint = Mathf.Infinity;
         int currentWayPointIndex = 0;
@@ -56,7 +59,7 @@ namespace RPG.Control
         private void Update()
         {
             if (health.IsDead()) { return; }
-            if (InAttackRangeOfPlayer() && fighter.CanAttack(player))
+            if (IsAggrevated() && fighter.CanAttack(player))
             {
 
                 print("give chase " + gameObject.name);
@@ -82,6 +85,11 @@ namespace RPG.Control
         {
             timeSinceLastSawPlayer += Time.deltaTime;
             timeSinceArrivedAtWayPoint += Time.deltaTime;
+            timeSinceAggrevated += Time.deltaTime;
+        }
+        public void Aggrevate()
+        {
+            timeSinceAggrevated = 0;
         }
 
         private void PatrolBehaviour()
@@ -129,13 +137,26 @@ namespace RPG.Control
         {
             timeSinceLastSawPlayer = 0;
             fighter.Attack(player);
+            AggrevateNearbyEnemies();
         }
 
-        private bool InAttackRangeOfPlayer()
+        private void AggrevateNearbyEnemies()
+        {
+            RaycastHit[] hits= Physics.SphereCastAll(transform.position, shoutDistance,Vector3.up, 0);
+            foreach (RaycastHit hit in hits)
+            {
+                AIController ai= hit.collider.GetComponent<AIController>();
+                if (ai == null) continue;
+                ai.Aggrevate();
+            }
+        }
+
+        private bool IsAggrevated()
         {
            // GameObject player = GameObject.FindWithTag("Player");
-            float v =Vector3.Distance(player.transform.position, transform.position);
-            return v < chaseDistance;
+            float distanceToPlayer =Vector3.Distance(player.transform.position, transform.position);
+
+            return distanceToPlayer < chaseDistance || timeSinceAggrevated< aggrevationCoolDownTime;
 
 
 

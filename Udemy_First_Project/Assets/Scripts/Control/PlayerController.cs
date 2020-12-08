@@ -14,6 +14,7 @@ namespace RPG.Control
     public class PlayerController : MonoBehaviour
     {
         Health health;
+
       
         [System.Serializable]
         struct CursorMapping
@@ -24,8 +25,9 @@ namespace RPG.Control
         }
         [SerializeField] CursorMapping[] cursorMappings = null;
         [SerializeField] float maxNavMeshProjectionDistance = 1f;
+        [SerializeField] float raycastRadius = 1f;
         //Tweak below in editor for changes 
-        [SerializeField] float maxNavPathLength = 40f;
+    
         private void Awake()
         {
             health = GetComponent<Health>();
@@ -71,7 +73,7 @@ namespace RPG.Control
         }
         RaycastHit[] RaycastAllSorted()
         {
-            RaycastHit[] hits= Physics.RaycastAll(GetMouseRay());
+            RaycastHit[] hits= Physics.SphereCastAll(GetMouseRay(), raycastRadius);
             float[] distances = new float[hits.Length];
             for (int i = 0; i < hits.Length; i++)
             {
@@ -106,7 +108,7 @@ namespace RPG.Control
             bool hasHit = RaycastNavMesh(out target);
             if (hasHit)
             {
-
+                if (!GetComponent<Mover>().CanMoveTo(target)) return false;
                 if (Input.GetMouseButton(0))
                 {
                     GetComponent<Mover>().StartMoveAction(target, 1f);
@@ -130,30 +132,10 @@ namespace RPG.Control
             
             target = navMeshHit.position;
 
-            //calculating nav mesh path
-            //path needs to be assigned
-            NavMeshPath path = new NavMeshPath();
-            bool hasPath = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, path);
-            if (!hasPath) return false;
-            //preventing use of partial paths
-            //e.g to top of unaccessible buildings
-            if(path.status != NavMeshPathStatus.PathComplete) return false;
-            if (GetPathLength(path) > maxNavPathLength) return false;
             return true;
         }
 
-        private float GetPathLength(NavMeshPath path)
-        {
-            float total = 0;
-            if (path.corners.Length < 2) return total;
-            // not to full length
-            for (int i = 0; i < path.corners.Length-1; i++)
-            {
-                total  += Vector3.Distance(path.corners[i], path.corners[i + 1]);
-            }
-            //if tweaking add print state to evaluate
-            return total;
-        }
+       
 
         private void SetCursor(CursorType type)
         {

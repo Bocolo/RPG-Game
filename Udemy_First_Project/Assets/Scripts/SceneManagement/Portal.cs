@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AI;
+using RPG.Control;
 /// <summary>
 /// if character not updating properly its because nav mesh agent update conflict
 /// marked with ***
@@ -48,10 +49,20 @@ namespace RPG.SceneManagement
             yield return fader.FadeOut(fadeOutTime);
             //save current level
             SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
+
+            PlayerController playerController =GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+
+            playerController.enabled = false;
             wrapper.Save();
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
+
+            PlayerController newPlayerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+
+            newPlayerController.enabled = false;
             //   print("Scene Loaded");
             //reload current level
+
+
             wrapper.Load();
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
@@ -60,7 +71,10 @@ namespace RPG.SceneManagement
             wrapper.Save();
 
             yield return new WaitForSeconds(fadeWaitTime);
-            yield return fader.FadeIn(fadeInTime);
+            /*yield return------- for old fader, n.b. placed below current infader.cs*/
+            fader.FadeIn(fadeInTime);
+
+            newPlayerController.enabled = true;
 
             Destroy(gameObject);//only works on gameobjects at root of scene
         }

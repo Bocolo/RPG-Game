@@ -6,7 +6,7 @@ using System;
 using GameDevTV.Utils;
 using UnityEngine.Events;
 
-namespace RPG.Resources
+namespace RPG.Attributes
 
 
 
@@ -89,9 +89,13 @@ namespace RPG.Resources
         }
         public float GetPercentage()
         {
-            return (healthPoints.value / GetComponent<BaseStats>().GetStat(Stat.Health)) * 100;
+            return 100 * (GetFraction());
         }
-       
+
+        public float GetFraction()
+        {
+            return healthPoints.value / GetComponent<BaseStats>().GetStat(Stat.Health);
+        }
 
         private void Die()
         {
